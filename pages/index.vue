@@ -1,7 +1,7 @@
 <template>
   <div class="w-full text-center">
     <va-progress-circle class="text-center mx-auto" v-if="pending" indeterminate />
-    <div class="block m-4 md:flex flex-wrap gap-4 justify-center items-center">
+    <div class="block space-y-4 md:space-y-0 m-4 md:flex flex-wrap gap-4 justify-center items-center">
       <va-card color="primary" gradient :bordered="false">
         <va-card-title>Pending Orders</va-card-title>
         <va-card-content>
@@ -21,7 +21,7 @@
         </va-card-content>
       </va-card>
     </div>
-    <div class="block md:flex flex-wrap gap-4 justify-center items-center">
+    <div class="block space-y-4 md:space-y-0 md:flex flex-wrap gap-4 justify-center items-center">
       <va-card color="primary" gradient :bordered="false">
         <va-card-title>Registered Users</va-card-title>
         <va-card-content>
