@@ -13,88 +13,57 @@
     <va-data-table
       v-model:sort-by="sortBy"
       v-model:sorting-order="sortingOrder"
-      :items="items"
+      :items="users"
       :filter="filter"
       :columns="columns"
-      :wrapper-size="400"
+      :wrapper-size="600"
       virtual-scroller
       sticky-header
       hoverable
     >
+      <template #cell(orders)="{ rowData }">
+        {{ rowData.orders.length }}
+      </template>
+      <template #cell(cart)="{ rowData }">
+        {{ rowData.cart.length }}
+      </template>
       <template #cell(actions)="{ rowData }">
-        <va-button
-          preset="plain"
-          icon="visibility"
-          @click="viewOrder(rowData)"
-        />
+        <va-button @click="viewOrder(rowData)">View</va-button>
       </template>
     </va-data-table>
+    <va-modal
+      v-model="showModal"
+      size="large"
+      ok-text="Ok"
+      @before-close="beforeModalClose"
+    >
+      <ViewUser :user="userData" :token="authStore.getAuth.token" />
+    </va-modal>
   </section>
 </template>
 
 <script setup>
+import { useAuthStore } from "@/store/auth";
 
-const users = ref([
-{
-  id: 1,
-  name: "Leanne Graham",
-  username: "Bret",
-  email: "Sincere@april.biz",
-  address: {
-    street: "Kulas Light",
-    suite: "Apt. 556",
-    city: "Gwenborough",
-    zipcode: "92998-3874",
-    geo: {
-      lat: "-37.3159",
-      lng: "81.1496",
-    },
-  },
-  phone: "1-770-736-8031 x56442",
-  website: "hildegard.org",
-  company: {
-    name: "Romaguera-Crona",
-    catchPhrase: "Multi-layered client-server neural-net",
-    bs: "harness real-time e-markets",
-  },
-},
-{
-  id: 2,
-  name: "Ervin Howell",
-  username: "Antonette",
-  email: "Shanna@melissa.tv",
-  address: {
-    street: "Victor Plains",
-    suite: "Suite 879",
-    city: "Wisokyburgh",
-    zipcode: "90566-7771",
-    geo: {
-      lat: "-43.9509",
-      lng: "-34.4618",
-    },
-  },
-  phone: "010-692-6593 x09125",
-  website: "anastasia.net",
-  company: {
-    name: "Deckow-Crist",
-    catchPhrase: "Proactive didactic contingency",
-    bs: "synergize scalable supply-chains",
-  },
-},
-]);
+const authStore = useAuthStore();
 
 const columns = ref([
-  { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
   { key: "username", sortable: true },
-  { key: "name", sortable: true },
-  { key: "phone" },
+  { key: "email", sortable: true },
+  { key: "firstName", sortable: true },
+  { key: "address.street", label: "street" },
+  { key: "address.state", label: "State", sortable: true },
+  { key: "orders", sortable: true},
+  { key: "cart", sortable: true},
   { key: "actions", width: 80 },
 ]);
 
 const sortingOrder = ref("asc");
-const sortBy = ref("username")
-const items = ref(shuffle(users.value)); 
+const sortBy = ref("username");
 const filter = ref("")
+
+const showModal = ref(false)
+let userData = ref(null)
 
 watch(filter, (newFilter) => {
   updateFilter(newFilter);
@@ -104,24 +73,19 @@ function updateFilter(newFilter) {
   filter.value = newFilter;
 }
 
-function shuffle(array) {
-  const shuffled = [...array];
-  let currentIndex = shuffled.length, randomIndex, temporaryValue;
+const { data } = await useFetch('view/users/', {
+  baseURL: useRuntimeConfig().public.baseURL,
+  headers: {
+    authorization: authStore.getAuth.token,
+  },
+});
 
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+const users = data.value.users
 
-    temporaryValue = shuffled[currentIndex];
-    shuffled[currentIndex] = shuffled[randomIndex];
-    shuffled[randomIndex] = temporaryValue;
-  }
-
-  return shuffled;
+function viewOrder(data) {
+  showModal.value = true
+  userData.value = data
 }
 
-function viewOrder(id) {
-  alert(JSON.stringify(id))
-}
 
 </script>

@@ -3,7 +3,7 @@
     <va-avatar>
       <img
         :src="product.imageURL"
-        alt=""
+        :alt="product.name"
       >
     </va-avatar>
   </va-list-item-section>
@@ -20,7 +20,7 @@
 
   <va-list-item-section icon>
     <!--  -->
-    <NuxtLink :to="`https://app.rexapp.com/shop/${product.slug}`">
+    <NuxtLink :to="`https://app.rexapp.ng/shop/${product.slug}`">
       <va-icon
         name="remove_red_eye"
         color="background-tertiary"

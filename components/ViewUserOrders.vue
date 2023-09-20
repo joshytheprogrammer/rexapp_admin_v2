@@ -1,22 +1,11 @@
 <template>
-  <section >
-    <div class="grid sm:grid-cols-3 gap-6 mb-6">
-      <div></div>
-      <va-input
-        v-model="filter"
-        label="Search"
-        placeholder="Search by id..."
-        class="w-full"
-      />
-      <div></div>
-    </div>
+  <div class="block">
     <va-data-table
       v-model:sort-by="sortBy"
       v-model:sorting-order="sortingOrder"
-      :filter="filter"
       :items="orders"
       :columns="columns"
-      :wrapper-size="600"
+      :wrapper-size="400"
       virtual-scroller
       sticky-header
       hoverable
@@ -39,17 +28,14 @@
       v-model="showModal"
       size="large"
       ok-text="Ok"
-      @before-close="beforeModalClose"
     >
-      <ViewOrder :id="viewID" :token="authStore.getAuth.token" />
+      <ViewOrder :id="viewID" :token="token" />
     </va-modal>
-  </section>
+  </div>
 </template>
 
 <script setup>
-import { useAuthStore } from "@/store/auth";
-
-const authStore = useAuthStore();
+const props = defineProps(['orders', 'token']);
 
 const columns = ref([
   { key: "_id", sortable: false },
@@ -59,35 +45,13 @@ const columns = ref([
 ]);
 
 const sortingOrder = ref("desc");
-const sortBy = ref("status")
-const filter = ref("")
+const sortBy = ref("status");
 
 const showModal = ref(false)
 let viewID = ref(null)
-
-watch(filter, (newFilter) => {
-  updateFilter(newFilter);
-});
-
-function updateFilter(newFilter) {
-  filter.value = newFilter;
-}
 
 function viewOrder(id) {
   showModal.value = true
   viewID.value = id
 }
-
-const { data, refresh } = await useFetch('view/orders/', {
-  baseURL: useRuntimeConfig().public.baseURL,
-  headers: {
-    authorization: authStore.getAuth.token,
-  },
-});
-
-function beforeModalClose() {
-  refresh()
-}
-
-const orders = Object.values(data.value)[0]
 </script>
