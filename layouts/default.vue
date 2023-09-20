@@ -120,6 +120,17 @@ watch(() => route.fullPath, () => {
                   </va-sidebar-item-content>
                 </NuxtLink>
               </va-sidebar-item>
+
+              <va-sidebar-item>
+                <NuxtLink to="/view/products">
+                  <va-sidebar-item-content>
+                    <va-icon name="inventory_2" />
+                      <va-sidebar-item-title>
+                        Products
+                      </va-sidebar-item-title>
+                  </va-sidebar-item-content>
+                </NuxtLink>
+              </va-sidebar-item>
             </template>
           </va-collapse>
         </va-accordion>

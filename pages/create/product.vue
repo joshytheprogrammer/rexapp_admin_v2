@@ -19,7 +19,7 @@
           </div>
           <div class="">
             <va-input
-              file="product.imageURL"
+              v-model="product.imageURL"
               :rules="
               [(v) => (v && v.length > 0) || 'Image URL is required']
               "
