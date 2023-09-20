@@ -1,6 +1,6 @@
 <template>
   <div class="block space-y-4">
-    <p v-if="pending" class="text-center p-2">Loading...</p>
+    <va-progress-circle class="text-center mx-auto" v-if="pending" indeterminate />
     <va-scroll-container
       class="max-h-48 my-8"
       vertical

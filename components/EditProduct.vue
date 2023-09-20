@@ -1,6 +1,6 @@
 <template>
   <va-inner-loading :loading="isLoading">
-    <p v-if="pending" class="text-center p-2">Loading...</p>
+    <va-progress-circle class="text-center mx-auto" v-if="pending" indeterminate />
     <form @submit.prevent="submit" class="flex flex-col justify-center space-y-4 mx-4">
       <va-input
         v-model="product.name"
