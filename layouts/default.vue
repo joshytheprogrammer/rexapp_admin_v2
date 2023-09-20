@@ -131,6 +131,17 @@ watch(() => route.fullPath, () => {
                   </va-sidebar-item-content>
                 </NuxtLink>
               </va-sidebar-item>
+
+              <va-sidebar-item>
+                <NuxtLink to="/view/categories">
+                  <va-sidebar-item-content>
+                    <va-icon name="category" />
+                      <va-sidebar-item-title>
+                        Categories
+                      </va-sidebar-item-title>
+                  </va-sidebar-item-content>
+                </NuxtLink>
+              </va-sidebar-item>
             </template>
           </va-collapse>
         </va-accordion>

@@ -1,11 +1,11 @@
 <template>
   <va-inner-loading :loading="isLoading">
+    <p v-if="pending" class="text-center p-2">Loading...</p>
     <form @submit.prevent="submit" class="flex flex-col justify-center space-y-4 mx-4">
       <va-input
         v-model="product.name"
         placeholder="Enter the name of the product"
         label="Name"
-        @blur="generateSlug"
         required-mark
       />
       <!-- <va-select
@@ -61,61 +61,7 @@ const { init } = useToast();
 
 let isLoading = ref(false);
 
-const manufacturer = [
-  "Toyota",
-  "Honda",
-  "Ford",
-  "Nissan",
-  "Hyundai",
-  "Kia",
-  "Volkswagen",
-  "Mercedes Benz",
-  "BMW",
-  "Audi",
-  "Land Rover",
-  "Chevrolet",
-  "Peugeot",
-  "Subaru",
-  "Mitsubishi",
-  "Lexus",
-  "Infiniti",
-  "Jaguar",
-  "Renault",
-  "Suzuki",
-  "Jeep",
-  "Dodge",
-  "Acura",
-  "GMC",
-  "Chrysler",
-  "RAM",
-  "Fiat",
-  "Alfa Romeo",
-  "Mini",
-  "Volvo",
-  "Skoda",
-  "Porsche",
-  "Maserati",
-  "Rolls-Royce",
-  "Bentley",
-  "Aston Martin",
-  "Lamborghini",
-  "Bugatti",
-  "Tesla",
-  "McLaren",
-  "Citroën",
-  "DAF",
-  "Daewoo",
-  "Foton",
-  "Geely",
-  "Higer",
-  "JAC",
-  "Mahindra",
-  "Tata",
-  "Zotye",
-  "Innoson"
-];
-
-const { data } = await useFetch(() => `/view/products/byId/${props.id}`, {
+const { data, pending } = await useFetch(() => `/view/products/byId/${props.id}`, {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
     authorization: props.token,

@@ -1,5 +1,6 @@
 <template>
   <div class="block space-y-4">
+    <p v-if="pending" class="text-center p-2">Loading...</p>
     <va-scroll-container
       class="max-h-48 my-8"
       vertical
@@ -140,7 +141,7 @@
     </va-collapse>
     <!-- {{ data }} -->
     <form class="mt-4" @submit.prevent="submit" v-if="data.order.status === 'pending'">
-      <va-button type="submit"> Mark as Completed </va-button>
+      <va-button :disabled="isLoading" type="submit"> Mark as Completed </va-button>
     </form>
   </div>
 </template>
@@ -151,9 +152,10 @@ import { useToast } from 'vuestic-ui';
 const props = defineProps(['id', 'token']);
 
 const { init } = useToast();
-const orderCollapseIsOpen = ref(false);
 
-const { data, refresh } = await useFetch(() => `/view/orders/${props.id}`, {
+let isLoading = ref(false);
+
+const { data, pending, refresh } = await useFetch(() => `/view/orders/${props.id}`, {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
     authorization: props.token,
@@ -161,21 +163,30 @@ const { data, refresh } = await useFetch(() => `/view/orders/${props.id}`, {
 });
 
 async function submit() {
-  const { data:res } = await useFetch('/view/order/complete', {
-    baseURL: useRuntimeConfig().public.baseURL,
-    method: "POST",
-    body: {
-      userId: data.value.data._id,
-      orderId: data.value.order._id
-    },
-    headers: {
-      authorization: props.token,
-    },
-  });
+  isLoading.value = true
 
-  init({message: res.value.message, color: "success"})
-  console.log(res.value)
-  refresh()
+  try {
+    const { data:res } = await useFetch('/view/order/complete', {
+      baseURL: useRuntimeConfig().public.baseURL,
+      method: "POST",
+      body: {
+        userId: data.value.data._id,
+        orderId: data.value.order._id
+      },
+      headers: {
+        authorization: props.token,
+      },
+    });
+
+    init({message: res.value.message, color: "success"})
+
+  } catch (error) {
+    console.error(error)
+  }finally{
+    isLoading.value = false;
+    refresh();
+  }
+
 }
 </script>
 

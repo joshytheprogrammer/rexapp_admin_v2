@@ -25,7 +25,7 @@
         <img class="h-20" :src="rowData.imageURL" :alt="rowData.name">
       </template>
       <template #cell(cart)="{ rowData }">
-        <!-- {{ rowData.cart.length }} -->
+        {{ rowData.cart.length }}
       </template>
       <template class="" #cell(actions)="{ rowData }">
         <div class="space-x-4">
