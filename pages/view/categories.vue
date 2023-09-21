@@ -35,8 +35,8 @@
           <NuxtLink @click.prevent="editModal(rowData._id)">
             <va-button color="warning">Edit</va-button>
           </NuxtLink>
-          <NuxtLink disabled>
-            <va-button color="danger" disabled>Delete</va-button>
+          <NuxtLink :disabled="isLoading" @click.prevent="deleteItem(rowData._id)">
+            <va-button color="danger">Delete</va-button>
           </NuxtLink>
         </div>
       </template>
@@ -56,8 +56,12 @@
 
 <script setup>
 import { useAuthStore } from "@/store/auth";
+import { useToast, useModal } from 'vuestic-ui';
 
 const authStore = useAuthStore();
+
+const { init } = useToast();
+const { confirm } = useModal();
 
 const columns = ref([
   { key: "name", sortable: true },
@@ -69,6 +73,7 @@ const sortingOrder = ref("asc");
 const sortBy = ref("username");
 const filter = ref("")
 
+let isLoading = ref(false);
 const showEditModal = ref(false)
 let editProductID = ref(null)
 
@@ -94,5 +99,43 @@ function editModal(id) {
   editProductID.value = id
 }
 
+async function deleteItem(id) {
+  isLoading.value = true
+
+  const approve = await confirm({
+    message: 'Are you sure you want to delete this product?',
+    title: 'Are you sure?',
+    okText: "Yes",
+    cancelText: "No"
+  });
+
+  if(!approve) {isLoading.value = false; return;}
+
+  try {
+    const { data, error } = await useFetch('delete/category/byId/', {
+      baseURL: useRuntimeConfig().public.baseURL,
+      method: "POST",
+      headers: {
+        authorization: authStore.getAuth.token,
+      },
+      body: {categoryId: id}
+    });
+    
+    if (error.value) {
+      throw new Error(error.value)
+    }
+
+    if(!data.value) {
+      return;
+    }
+
+    init({message: data.value.message, color: "success"});
+  } catch (error) {
+    init({message: "An error occurred", color: "danger"});
+  }finally {
+    reloadNuxtApp();
+    isLoading.value = false;
+  }
+}
 
 </script>
