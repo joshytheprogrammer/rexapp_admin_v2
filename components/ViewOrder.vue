@@ -42,15 +42,15 @@
         <div class="p-2 border-[var(--va-background-border)] border-2 border-t-0">
           <p class="flex justify-between border-b space-x-8">
             <span>Username:</span>
-            <span>{{ data.data.username }}</span>
+            <span>{{ data.order.user.username }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Email:</span>
-            <span>{{ data.data.email }}</span>
+            <span>{{ data.order.user.email }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Full Name:</span>
-            <span>{{ data.data.firstName + " " + data.data.lastName }}</span>
+            <span>{{ data.order.user.first_name + " " + data.order.user.last_name }}</span>
           </p>
         </div>
       </template>
@@ -80,19 +80,19 @@
         <div class="p-2 border-[var(--va-background-border)] border-2 border-t-0">
           <p class="flex justify-between border-b space-x-8">
             <span>Street:</span>
-            <span>{{ data.data.address.street  }}</span>
+            <span>{{ data.order.user.street  }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>City:</span>
-            <span>{{ data.data.address.city  }}</span>
+            <span>{{ data.order.user.city  }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>State:</span>
-            <span>{{ data.data.address.state  }}</span>
+            <span>{{ data.order.user.state  }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Landmark:</span>
-            <span>{{ data.data.address.landmark  }}</span>
+            <span>{{ data.order.user.landmark  }}</span>
           </p>
         </div>
       </template>
@@ -126,15 +126,15 @@
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Order ID:</span>
-            <span>{{ data.order._id }}</span>
+            <span>{{ data.order.id }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Ordered on:</span>
-            <span>{{ new Date(data.order.orderDate).toLocaleString() }}</span>
+            <span>{{ new Date(data.order.created_at).toLocaleString() }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
-            <span>No items ordered:</span>
-            <span>{{ data.order.items.length }}</span>
+            <span>No of items ordered:</span>
+            <span>{{ data.order.itemsLength }}</span>
           </p>
         </div>
       </template>
@@ -158,23 +158,25 @@ let isLoading = ref(false);
 const { data, pending, refresh } = await useFetch(() => `/view/orders/${props.id}`, {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: props.token,
+    Authorization: 'Bearer ' + props.token,
   },
 });
+
+console.log(data.value)
 
 async function submit() {
   isLoading.value = true
 
   try {
-    const { data:res } = await useFetch('/view/order/complete', {
+    const { data: res } = await useFetch('/view/order/complete', {
       baseURL: useRuntimeConfig().public.baseURL,
       method: "POST",
       body: {
-        userId: data.value.data._id,
-        orderId: data.value.order._id
+        orderId: data.value.order.id,
+        userId: data.value.order.user_id,
       },
       headers: {
-        authorization: props.token,
+        Authorization: 'Bearer ' + props.token,
       },
     });
 

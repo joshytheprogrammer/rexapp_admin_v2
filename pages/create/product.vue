@@ -76,13 +76,12 @@
         <div class="space-y-6 py-4 px-6 mx-auto shadow-lg rounded-md w-fit">
           <div class="">
             <va-select
-              v-model="product.categories"
+              v-model="product.category_id"
               label="Categories"
               placeholder="Select categories"
               :options="categories"
               :text-by="(option) => option.name"
-              :value-by="(option) => option._id"
-              multiple
+              :value-by="(option) => option.id"
               :max-visible-options="2"
               searchable
               highlight-matched-text
@@ -118,14 +117,14 @@
           <div class="">
             <va-input
               required-mark
-              v-model="product.price.min"
+              v-model="product.min_price"
               label="Min Price"
             />
           </div>
           <div class="">
             <va-input
               required-mark
-              v-model="product.price.max"
+              v-model="product.max_price"
               label="Max Price"
             />
           </div>
@@ -243,22 +242,24 @@ let product = reactive({
   imageURL: '',
   slug: '',
   name: '',
-  categories: [],
+  category_id: '',
   manufacturer: '',
   partNumber: '',
   specification: '',
-  rating: 0,
-  price: {min: 0, max: 0},
+  rating: 1,
+  min_price: 0,
+  max_price: 0,
   description: ''
 });
 
 const { data: categories, pending } = await useFetch('view/categories/all/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: authStore.getAuth.token,
+    Authorization: 'Bearer '+authStore.getAuth.token,
   },
 });
 
+// Move this to backend
 function generateSlug() {
   const slug = product.name.toLowerCase().replace(/\s/g, "-") + "-" + productID.value;
 
@@ -279,7 +280,7 @@ async function submit() {
       method: "POST",
       body: product,
       headers: {
-        authorization: authStore.getAuth.token,
+        Authorization: 'Bearer '+authStore.getAuth.token,
       },
       credentials: 'include'
     });

@@ -108,6 +108,7 @@ let category = reactive({
   slug: ''
 });
 
+// Move this to backend
 function generateSlug() {
   const slug = category.name.toLowerCase().replace(/\s/g, "-") + "-" + categoryID.value;
 
@@ -128,7 +129,7 @@ async function submit() {
       method: "POST",
       body: category,
       headers: {
-        authorization: authStore.getAuth.token,
+        Authorization: 'Bearer '+authStore.getAuth.token,
       },
       credentials: 'include'
     });

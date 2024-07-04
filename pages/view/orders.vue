@@ -22,7 +22,7 @@
       hoverable
     >
       <template #cell(_id)="{ rowData }">
-        {{ rowData._id.substring(rowData._id.length - 8) }}
+        {{ rowData.id.substring(rowData.id.length - 8) }}
       </template>
       <template #cell(orderDate)="{ rowData }">
         {{ new Date(rowData.orderDate).toLocaleString() }} 
@@ -31,7 +31,7 @@
         <va-button
           preset="plain"
           icon="visibility"
-          @click="viewOrder(rowData._id)"
+          @click="viewOrder(rowData.id)"
         />
       </template>
     </va-data-table>
@@ -52,8 +52,8 @@ import { useAuthStore } from "@/store/auth";
 const authStore = useAuthStore();
 
 const columns = ref([
-  { key: "_id", sortable: false },
-  { key: "orderDate", sortable: true, sortingOptions: ["desc", "asc"] },
+  { key: "id", sortable: false },
+  { key: "created_at", sortable: true, sortingOptions: ["desc", "asc"] },
   { key: "status", sortable: true, sortingOptions: ["desc", "asc"] },
   { key: "actions", width: 80 },
 ]);
@@ -81,7 +81,7 @@ function viewOrder(id) {
 const { data, refresh } = await useFetch('view/orders/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: authStore.getAuth.token,
+    Authorization: 'Bearer '+authStore.getAuth.token,
   },
 });
 

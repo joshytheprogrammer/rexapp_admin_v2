@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   css: [],
   runtimeConfig: {
     public: {
-      baseURL: process.env.BASE_URL || 'https://api.rexapp.com/api',
+      baseURL: '',
     },
   },
   modules: [

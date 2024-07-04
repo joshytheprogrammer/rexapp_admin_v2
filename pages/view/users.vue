@@ -21,12 +21,6 @@
       sticky-header
       hoverable
     >
-      <template #cell(orders)="{ rowData }">
-        {{ rowData.orders.length }}
-      </template>
-      <template #cell(cart)="{ rowData }">
-        {{ rowData.cart.length }}
-      </template>
       <template #cell(actions)="{ rowData }">
         <va-button @click="viewOrder(rowData)">View</va-button>
       </template>
@@ -50,11 +44,11 @@ const authStore = useAuthStore();
 const columns = ref([
   { key: "username", sortable: true },
   { key: "email", sortable: true },
-  { key: "firstName", sortable: true },
-  { key: "address.street", label: "street" },
-  { key: "address.state", label: "State", sortable: true },
-  { key: "orders", sortable: true},
-  { key: "cart", sortable: true},
+  { key: "first_name", sortable: true },
+  { key: "street", label: "street" },
+  { key: "state", label: "State", sortable: true },
+  { key: "ordersLength", sortable: true},
+  { key: "cartLength", sortable: true},
   { key: "actions", width: 80 },
 ]);
 
@@ -76,7 +70,7 @@ function updateFilter(newFilter) {
 const { data } = await useFetch('view/users/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: authStore.getAuth.token,
+    Authorization: 'Bearer '+authStore.getAuth.token,
   },
 });
 

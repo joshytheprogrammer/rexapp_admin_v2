@@ -10,7 +10,7 @@
 
   <va-list-item-section>
     <va-list-item-label>
-      {{ product.name }} @  [{{ formatPrice(product.price.min) }} - {{ formatPrice(product.price.max) }}] * <b>{{ item.quantity }}</b>
+      {{ product.name }} @  [{{ formatPrice(product.min_price) }} - {{ formatPrice(product.max_price) }}] * <b>{{ item.quantity }}</b>
     </va-list-item-label>
 
     <va-list-item-label caption>
@@ -33,14 +33,14 @@
 <script setup>
 const props = defineProps(['item', 'token']);
 
-const { data } = await useFetch(() => `/view/products/byId/${props.item.partId}`, {
+const { data } = await useFetch(() => `/view/products/byId/${props.item.product_id}`, {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: props.token,
+    Authorization: 'Bearer '+props.token,
   },
 });
 
-const product = await data.value.product
+const product = data.value.product
 
 function formatPrice(price) {
   // const NGN_SYMBOL = "₦";

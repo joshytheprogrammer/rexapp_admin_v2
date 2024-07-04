@@ -32,10 +32,10 @@
           <NuxtLink target="_blank" :to="`https://app.rexapp.ng/categories/${rowData.slug}`">
             <va-button>View</va-button>
           </NuxtLink>
-          <NuxtLink @click.prevent="editModal(rowData._id)">
+          <NuxtLink @click.prevent="editModal(rowData.id)">
             <va-button color="warning">Edit</va-button>
           </NuxtLink>
-          <NuxtLink :disabled="isLoading" @click.prevent="deleteItem(rowData._id)">
+          <NuxtLink :disabled="isLoading" @click.prevent="deleteItem(rowData.id)">
             <va-button color="danger">Delete</va-button>
           </NuxtLink>
         </div>
@@ -88,7 +88,7 @@ function updateFilter(newFilter) {
 const { data } = await useFetch('view/categories/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: authStore.getAuth.token,
+    Authorization: 'Bearer '+authStore.getAuth.token,
   },
 });
 
@@ -112,11 +112,12 @@ async function deleteItem(id) {
   if(!approve) {isLoading.value = false; return;}
 
   try {
+    // Delete Image as well.
     const { data, error } = await useFetch('delete/category/byId/', {
       baseURL: useRuntimeConfig().public.baseURL,
       method: "POST",
       headers: {
-        authorization: authStore.getAuth.token,
+        Authorization: 'Bearer '+authStore.getAuth.token,
       },
       body: {categoryId: id}
     });

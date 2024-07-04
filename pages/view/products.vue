@@ -32,10 +32,10 @@
           <NuxtLink target="_blank" :to="`https://app.rexapp.ng/shop/${rowData.slug}`">
             <va-button>View</va-button>
           </NuxtLink>
-          <NuxtLink @click.prevent="editModal(rowData._id)">
+          <NuxtLink @click.prevent="editModal(rowData.id)">
             <va-button color="warning">Edit</va-button>
           </NuxtLink>
-          <NuxtLink :disabled="isLoading" @click.prevent="deleteItem(rowData._id)">
+          <NuxtLink :disabled="isLoading" @click.prevent="deleteItem(rowData.id)">
             <va-button color="danger">Delete</va-button>
           </NuxtLink>
         </div>
@@ -67,8 +67,8 @@ const columns = ref([
   { key: "name", sortable: true },
   { key: "imageURL"},
   { key: "manufacturer", sortable: true },
-  { key: "price.min", label: "Min Price", sortable: true },
-  { key: "price.max", label: "Max Price", sortable: true },
+  { key: "min_price", label: "Min Price", sortable: true },
+  { key: "max_price", label: "Max Price", sortable: true },
   { key: "rating", sortable: true},
   { key: "actions", width: 80},
 ]);
@@ -92,7 +92,7 @@ function updateFilter(newFilter) {
 const { data } = await useFetch('view/products/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: authStore.getAuth.token,
+    Authorization: 'Bearer '+authStore.getAuth.token,
   },
 });
 
@@ -120,7 +120,7 @@ async function deleteItem(id) {
       baseURL: useRuntimeConfig().public.baseURL,
       method: "POST",
       headers: {
-        authorization: authStore.getAuth.token,
+        Authorization: 'Bearer '+authStore.getAuth.token,
       },
       body: {productId: id}
     });

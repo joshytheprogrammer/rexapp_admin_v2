@@ -52,7 +52,7 @@ const authStore = useAuthStore();
 const { data, pending } = await useFetch('view/analytics/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: authStore.getAuth.token,
+    Authorization: 'Bearer '+authStore.getAuth.token,
   },
 });
 

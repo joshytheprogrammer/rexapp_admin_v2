@@ -32,7 +32,7 @@
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Full Name:</span>
-            <span>{{ user.firstName + " " + user.lastName }}</span>
+            <span>{{ user.first_name + " " + user.last_name }}</span>
           </p>
           <!-- {{ user }} -->
         </div>
@@ -63,19 +63,19 @@
         <div class="p-2 border-[var(--va-background-border)] border-2 border-t-0">
           <p class="flex justify-between border-b space-x-8">
             <span>Street:</span>
-            <span>{{ user.address.street  }}</span>
+            <span>{{ user.street  }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>City:</span>
-            <span>{{ user.address.city  }}</span>
+            <span>{{ user.city  }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>State:</span>
-            <span>{{ user.address.state  }}</span>
+            <span>{{ user.state  }}</span>
           </p>
           <p class="flex justify-between border-b space-x-8">
             <span>Landmark:</span>
-            <span>{{ user.address.landmark  }}</span>
+            <span>{{ user.landmark  }}</span>
           </p>
           <!-- {{ user }} -->
         </div>

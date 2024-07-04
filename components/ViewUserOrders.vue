@@ -10,17 +10,17 @@
       sticky-header
       hoverable
     >
-      <template #cell(_id)="{ rowData }">
-        {{ rowData._id.substring(rowData._id.length - 8) }}
+      <template #cell(id)="{ rowData }">
+        {{ rowData.id}}
       </template>
-      <template #cell(orderDate)="{ rowData }">
-        {{ new Date(rowData.orderDate).toLocaleString() }} 
+      <template #cell(created_at)="{ rowData }">
+        {{ new Date(rowData.created_at).toLocaleString() }} 
       </template>
       <template #cell(actions)="{ rowData }">
         <va-button
           preset="plain"
           icon="visibility"
-          @click="viewOrder(rowData._id)"
+          @click="viewOrder(rowData.id)"
         />
       </template>
     </va-data-table>
@@ -38,8 +38,8 @@
 const props = defineProps(['orders', 'token']);
 
 const columns = ref([
-  { key: "_id", sortable: false },
-  { key: "orderDate", sortable: true, sortingOptions: ["desc", "asc"] },
+  { key: "id", sortable: true },
+  { key: "created_at", sortable: true, sortingOptions: ["desc", "asc"] },
   { key: "status", sortable: true, sortingOptions: ["desc", "asc"] },
   { key: "actions", width: 80 },
 ]);

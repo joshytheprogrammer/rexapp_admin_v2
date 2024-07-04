@@ -56,7 +56,10 @@ async function login() {
   const { data, error } = await useFetch('/auth/login', {
     baseURL: useRuntimeConfig().public.baseURL,
     method: "POST",
-    body: {"email": email.value, "password": password.value},
+    body: {
+      "email": email.value, 
+      "password": password.value
+    },
     credentials: 'include'
   });
 
@@ -72,7 +75,7 @@ async function login() {
     return;
   }
 
-  authStore.setToken(data.value.token)
+  authStore.setToken(data.value.accessToken)
   
   isLoading.value = false;
 }
