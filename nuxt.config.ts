@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [],
+  ssr: false,
   runtimeConfig: {
     public: {
       baseURL: '',
