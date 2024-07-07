@@ -103,7 +103,7 @@ async function deleteItem(id) {
   isLoading.value = true
 
   const approve = await confirm({
-    message: 'Are you sure you want to delete this product?',
+    message: 'Are you sure you want to delete this category?',
     title: 'Are you sure?',
     okText: "Yes",
     cancelText: "No"

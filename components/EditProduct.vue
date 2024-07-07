@@ -1,21 +1,13 @@
 <template>
   <va-inner-loading :loading="isLoading">
     <va-progress-circle class="text-center mx-auto" v-if="pending" indeterminate />
-    <form @submit.prevent="submit" class="flex flex-col justify-center space-y-4 mx-4">
+    <form @submit.prevent="submit" class="flex flex-col justify-center space-y-4 ">
       <va-input
         v-model="product.name"
         placeholder="Enter the name of the product"
         label="Name"
         required-mark
       />
-      <!-- <va-select
-        v-model="product.manufacturer"
-        label="Manufacturer"
-        :options="manufacturer"
-        placeholder="Select an option"
-        searchable
-        required-mark
-      /> -->
       <va-input
         v-model="product.partNumber"
         placeholder="Provide the products unique part number"
@@ -28,12 +20,12 @@
       />
       <va-input
         required-mark
-        v-model="product.price.min"
+        v-model="product.min_price"
         label="Min Price"
       />
       <va-input
         required-mark
-        v-model="product.price.max"
+        v-model="product.max_price"
         label="Max Price"
       />
       <va-textarea
@@ -56,6 +48,7 @@
 <script setup>
 import { useToast } from 'vuestic-ui';
 const props = defineProps(['id', 'token']);
+const emits = defineEmits(['close'])
 
 const { init } = useToast();
 
@@ -64,7 +57,7 @@ let isLoading = ref(false);
 const { data, pending } = await useFetch(() => `/view/products/byId/${props.id}`, {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: props.token,
+    Authorization: 'Bearer '+props.token,
   },
 });
 
@@ -79,7 +72,7 @@ async function submit() {
       method: "POST",
       body: {product},
       headers: {
-        authorization: props.token,
+        Authorization: 'Bearer '+props.token,
       },
       credentials: 'include'
     });
@@ -93,10 +86,12 @@ async function submit() {
     }
 
     init({message: data.value.message, color: "success"});
+    init({message: 'Reload page to see changes', color: "success"});
+    emits('close');
   } catch (error) {
     init({message: "An error occurred", color: "danger"});
   } finally {
-    reloadNuxtApp();
+    // reloadNuxtApp();
     isLoading.value = false;
   }
   

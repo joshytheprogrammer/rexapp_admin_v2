@@ -36,7 +36,7 @@ let isLoading = ref(false);
 const { data, pending } = await useFetch(() => `/view/categories/byId/${props.id}`, {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
-    authorization: props.token,
+    Authorization: 'Bearer '+props.token,
   },
 });
 
@@ -51,7 +51,7 @@ async function submit() {
       method: "POST",
       body: {category},
       headers: {
-        authorization: props.token,
+        Authorization: 'Bearer '+props.token,
       },
       credentials: 'include'
     });
