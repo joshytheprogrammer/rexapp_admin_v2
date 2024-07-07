@@ -70,7 +70,7 @@ function updateFilter(newFilter) {
   filter.value = newFilter;
 }
 
-const { data } = await useFetch('view/users/', {
+const { data } = await useFetch(() => 'view/users/', {
   baseURL: useRuntimeConfig().public.baseURL,
   headers: {
     Authorization: 'Bearer '+authStore.getAuth.token,
