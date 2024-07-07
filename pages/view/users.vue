@@ -21,6 +21,9 @@
       sticky-header
       hoverable
     >
+      <template #cell(full_name)="{ rowData }">
+        <span>{{ rowData.last_name + " " + rowData.first_name }}</span>
+      </template>
       <template #cell(actions)="{ rowData }">
         <va-button @click="viewOrder(rowData)">View</va-button>
       </template>
@@ -44,11 +47,11 @@ const authStore = useAuthStore();
 const columns = ref([
   { key: "username", sortable: true },
   { key: "email", sortable: true },
-  { key: "first_name", sortable: true },
+  { key: "full_name", label: 'Full Name', sortable: true },
   { key: "street", label: "street" },
   { key: "state", label: "State", sortable: true },
-  { key: "ordersLength", sortable: true},
-  { key: "cartLength", sortable: true},
+  { key: "ordersLength", label: 'Orders placed', sortable: true},
+  { key: "cartLength", label: 'Items in Cart', sortable: true},
   { key: "actions", width: 80 },
 ]);
 

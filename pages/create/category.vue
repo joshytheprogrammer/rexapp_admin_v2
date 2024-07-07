@@ -50,7 +50,7 @@
         <div class="">
           <va-textarea
             v-model="category.description"
-            max-length="700"
+            :max-length="700"
             label="Description"
             counter
             required-mark

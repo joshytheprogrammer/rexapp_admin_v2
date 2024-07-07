@@ -38,7 +38,7 @@
       />
       <va-textarea
         v-model="product.description"
-        max-length="125"
+        :max-length="125"
         label="Description"
         placeholder="String keywords into a sentence. Helps in search..."
         counter

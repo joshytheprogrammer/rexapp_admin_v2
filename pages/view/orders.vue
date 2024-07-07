@@ -21,11 +21,8 @@
       sticky-header
       hoverable
     >
-      <template #cell(_id)="{ rowData }">
-        {{ rowData.id.substring(rowData.id.length - 8) }}
-      </template>
-      <template #cell(orderDate)="{ rowData }">
-        {{ new Date(rowData.orderDate).toLocaleString() }} 
+      <template #cell(created_at)="{ rowData }">
+        {{ new Date(rowData.created_at).toLocaleString() }} 
       </template>
       <template #cell(actions)="{ rowData }">
         <va-button
