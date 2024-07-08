@@ -261,9 +261,23 @@ const { data: categories, pending } = await useFetch('view/categories/all/', {
 
 // Move this to backend
 function generateSlug() {
+  product.name = cleanName(product.name);
   const slug = product.name.toLowerCase().replace(/\s/g, "-") + "-" + productID.value;
 
   product.slug = slug;
+}
+
+function cleanName(name) {
+  // Remove hyphens, spaces, and strange symbols
+  name = name.replace(/[-\s&,$#@!*()+]+/g, ' ');
+
+  // Convert to lowercase and then capitalize the first letter of each word
+  name = name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+
+  // Remove extra spaces
+  name = name.trim().replace(/\s+/g, ' ');
+
+  return name;
 }
 
 async function submit() {
